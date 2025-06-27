@@ -16,7 +16,7 @@ dotenv.config()
 
 
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000;
 const __dirname =path.resolve();
 
 app.use(cookieParser());
@@ -41,6 +41,6 @@ if (process.env.NODE_ENV === "production") {
 
 
 server.listen(PORT, () => {
-  console.log('Server is running on PORT :', + PORT);
+  console.log('Server is running on PORT :',  PORT);
   connectDB();
 });

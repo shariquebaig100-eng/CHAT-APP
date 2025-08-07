@@ -93,7 +93,7 @@ const MessageInput = () => {
                 </div>
                 <button
                     type='submit'
-                    className='btn btn-sm btn-circle'
+                    className='btn btn-sm btn-circle '
                     disabled={!text.trim() && !imagePreview}
                 >
                     <Send size={22} />

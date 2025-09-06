@@ -16,12 +16,12 @@ dotenv.config()
 
 
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000;
 // const __dirname = path.resolve();
 
 app.use(cookieParser());
 const allowedOrigin =[
-  "http://localhost:5173","https://chat-app-1-xt2p.onrender.com"
+  "http://localhost:5173","https://chat-app-1-xt2p.onrender.com","https://chat-app-phi-ashen-92.vercel.app"
 ]
 
 app.use(express.json());//this wil allow to use json data out of the body

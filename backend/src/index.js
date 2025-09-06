@@ -23,9 +23,8 @@ app.use(
       if (
         origin.startsWith("http://localhost:5173") ||
         origin.startsWith("http://localhost:5174") ||
-        origin.startsWith("https://chat-app-phi-ashen-92.vercel.app") ||
-        origin.startsWith("https://chat-app-git-main-sharique-baigs-projects.vercel.app") ||
-        origin.startsWith("https://chat-7v3i928yn-sharique-baigs-projects.vercel.app")
+        /\.vercel\.app$/.test(origin) ||
+        /\.onrender\.com$/.test(origin)
       ) {
         callback(null, true);
       } else {

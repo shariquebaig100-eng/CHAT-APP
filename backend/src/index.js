@@ -19,10 +19,23 @@ dotenv.config()
 const PORT = process.env.PORT || 5000;
 // const __dirname = path.resolve();
 
-app.use(cookieParser());
-const allowedOrigin =[
-  "http://localhost:5173","http://localhost:5174","https://chat-d72ynpn3k-sharique-baigs-projects.vercel.app"
-]
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman, curl etc.
+      if (
+        origin.startsWith("http://localhost:5173") ||
+        origin.startsWith("http://localhost:5174") ||
+        /\.vercel\.app$/.test(origin) // ✅ allow any Vercel frontend
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());//this wil allow to use json data out of the body
 app.use(cors({

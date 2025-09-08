@@ -15,23 +15,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
 app.use(express.json());
 
-// ✅ Dynamic CORS setup
+// ✅ Fixed frontend domain CORS
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Postman, curl, etc.
-      if (
-        origin.startsWith("http://localhost:5173") ||
-        origin.startsWith("http://localhost:5174") ||
-        /\.vercel\.app$/.test(origin) ||
-        /\.onrender\.com$/.test(origin)
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS: " + origin));
-      }
-    },
-    credentials: true,
+    origin: "https://chat-app-phi-ashen-92.vercel.app", // frontend domain
+    credentials: true, // cookies ke liye must
   })
 );
 

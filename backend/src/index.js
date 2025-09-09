@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
 const allowedOrigin =[
-  "http://localhost:5173","https://chat-app-1-xt2p.onrender.com"
+  "http://localhost:5173","https://chat-lwcap7yqt-sharique-baigs-projects.vercel.app"
 ]
 
 app.use(express.json());//this wil allow to use json data out of the body

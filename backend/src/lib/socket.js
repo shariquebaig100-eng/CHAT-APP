@@ -1,33 +1,22 @@
-import express from "express";
 import { Server } from "socket.io";
 import http from "http";
+import express from "express";
 
 const app = express();
 const server = http.createServer(app);
 
 // ✅ Socket.io CORS config
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "https://chat-app-phi-ashen-92.vercel.app",
-  "https://chat-7k7mdg3eu-sharique-baigs-projects.vercel.app"
-];
-
 const io = new Server(server, {
   cors: {
-    origin: function(origin, callback) {
-      if (!origin) return callback(null, true); // Postman, mobile, curl
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS: " + origin));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      /\.vercel\.app$/   // ✅ allow all Vercel deploys
+    ],
     methods: ["GET", "POST"],
-    credentials: true, // 👈 must for cookies
+    credentials: true,
   },
 });
-
 
 const userSocketMap = {};
 

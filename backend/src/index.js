@@ -1,54 +1,51 @@
-import express from "express";
-import http from "http";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import cors from "cors";
+import cors from 'cors';
+import express from 'express';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+// import path from "path"
 
-import authRoutes from "./routers/auth.route.js";
-import messageRoutes from "./routers/message.route.js";
-import { connectDB } from "./lib/db.js";
-import { initSocket } from "./socket.js";
 
-dotenv.config();
+import authRoutes from './routers/auth.route.js';
+import messageRoutes from './routers/message.route.js';
+import { app, server } from './lib/socket.js';
 
-const app = express();
-const server = http.createServer(app);
+import { connectDB } from './lib/db.js';
+
+dotenv.config()
+
+
+
+
 const PORT = process.env.PORT || 5000;
+// const __dirname = path.resolve();
 
-// ✅ Middleware
 app.use(cookieParser());
-app.use(express.json());
+const allowedOrigin =[
+  "http://localhost:5173","https://chat-app-1-xt2p.onrender.com"
+]
 
-const allowedOrigins = [
-  "https://chat-app-phi-ashen-92.vercel.app",
-  "https://chat-7k7mdg3eu-sharique-baigs-projects.vercel.app",
-];
+app.use(express.json());//this wil allow to use json data out of the body
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true,
+}));
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS: " + origin));
-      }
-    },
-    credentials: true, // 👈 must for cookies
-  })
-);
-
-// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.get("/", (req, res) => res.send("Backend is running..."));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "/frontend/dist")))
 
-// ✅ Socket.io init
-const { io, userSocketMap } = initSocket(server, allowedOrigins);
 
-// ✅ DB + server listen
-server.listen(PORT, async () => {
-  console.log(`🚀 Server running on PORT: ${PORT}`);
-  await connectDB();
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+//   })
+// }
+app.get("/",(req,res)=>{
+  res.send("Backend is running...")
+});
+
+server.listen(PORT, () => {
+  console.log(`Server is running on PORT : ${PORT}`);
+  connectDB();
 });

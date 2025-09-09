@@ -16,12 +16,25 @@ app.use(cookieParser());
 app.use(express.json());
 
 // ✅ Fixed frontend domain CORS
+const allowedOrigins = [
+  "https://chat-app-phi-ashen-92.vercel.app",
+  "https://chat-7k7mdg3eu-sharique-baigs-projects.vercel.app"
+];
+
 app.use(
   cors({
-    origin: "https://chat-app-phi-ashen-92.vercel.app", // frontend domain
-    credentials: true, // cookies ke liye must
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true); // Postman, mobile, curl etc.
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
   })
 );
+
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);

@@ -6,17 +6,28 @@ const app = express();
 const server = http.createServer(app);
 
 // ✅ Socket.io CORS config
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://chat-app-phi-ashen-92.vercel.app",
+  "https://chat-7k7mdg3eu-sharique-baigs-projects.vercel.app"
+];
+
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      /\.vercel\.app$/   // ✅ allow all Vercel deploys
-    ],
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true); // Postman, mobile, curl
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
     methods: ["GET", "POST"],
-    credentials: true,
+    credentials: true, // 👈 must for cookies
   },
 });
+
 
 const userSocketMap = {};
 

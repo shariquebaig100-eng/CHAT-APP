@@ -14,13 +14,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
 app.use(express.json());
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://chat-app-phi-ashen-92.vercel.app"
-];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: "https://chat-app-phi-ashen-92.vercel.app",
   credentials: true,
 }));
 

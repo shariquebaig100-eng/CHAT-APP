@@ -10,6 +10,7 @@ export const generateToken = (userId, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: true, // Use secure cookies in production
+        path:"/",
     }
 
     )

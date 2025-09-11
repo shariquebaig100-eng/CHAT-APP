@@ -11,9 +11,10 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
+app.set("trust proxy",1);
+
 app.use(cookieParser());
 app.use(express.json());
-
 
 app.use(cors({
   origin: "https://chat-app-phi-ashen-92.vercel.app",
